@@ -4,7 +4,9 @@ This file is the game itself and front-end of Sudoky game
 
 import pygame
 import sys
+import math
 import backend as be
+from time import time
 
 WINDOW_WIDTH = 440
 WINDOW_HEIGHT = 450
@@ -14,7 +16,6 @@ sm_rect_width = WINDOW_WIDTH/9
 sm_rect_height = WINDOW_HEIGHT/9
 game_running = True
 
-
 clicked_row = -1
 clicked_col = -1
 
@@ -22,7 +23,7 @@ clicked_col = -1
 pygame.init()
 
 #create game window
-game_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+game_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT+50))
 
 
 #set title
@@ -43,11 +44,9 @@ while game_running:
             game_running = False
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-            mouseX = event.pos[0]
-            mouseY = event.pos[1]
 
-            clicked_row = int(mouseY // sm_rect_height)
-            clicked_col = int(mouseX // sm_rect_height)
+            clicked_row = int(event.pos[1] // sm_rect_height)
+            clicked_col = int(event.pos[0] // sm_rect_height)
 
             if board[clicked_row][clicked_col].modifiable == 0:
                 clicked_row = -1 
@@ -77,9 +76,9 @@ while game_running:
             if r%3 == 0 and c%3 == 0:
                 lrg_rect = pygame.Rect(c/3*lrg_rect_width, r/3*lrg_rect_height, lrg_rect_width, lrg_rect_height)
                 pygame.draw.rect(game_window, (0,0,0), lrg_rect, 4)
-                #draw small rectangle   
-                # (from left, from top, width, height)
             
+            #draw small rectangle   
+            # (from left, from top, width, height)
             sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width, sm_rect_height)
                 #(where, color, what to draw)
             if r == clicked_row and c == clicked_col:
@@ -98,6 +97,15 @@ while game_running:
             if board[r][c].val == 0:
                 is_full += 1
 
+    sec =  pygame.time.get_ticks() / 1000
+    min = sec // 60
+    hour = min // 60
+
+    timer = "%02d:%02d:%02d" % (hour%24, min%60, sec%60)
+    txt_surface = font.render(str(timer), True, pygame.Color('grey'))
+    game_window.blit(txt_surface, (WINDOW_WIDTH-105, WINDOW_HEIGHT+15))            
+
+
     if is_full == 0 and be.is_solved(board):
 
         print("YOOOOOOUUU SOOOOOOOOOLVED ITTTTT")
@@ -108,11 +116,7 @@ while game_running:
     pygame.display.flip()
 
 
-
-
     #pygame.draw.line(game_window, (255,0,0), (100, 100), (300, 200), 5)
-    
-    
 
     #empty_rect = pygame.Rect(400, 200, 25, 25)
     #pygame.draw.rect(game_window, (255,0,0), empty_rect, 0)
