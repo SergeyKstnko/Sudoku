@@ -6,7 +6,7 @@ import pygame
 import sys
 import math
 import backend as be
-from time import time
+from pygame_widgets import Button
 
 WINDOW_WIDTH = 440
 WINDOW_HEIGHT = 450
@@ -31,6 +31,16 @@ pygame.display.set_caption("Weeeelcome the one and only Sudoky game.")
 
 board = [[be.Square(be.board_int[j][i]) for i in range(9)] for j in range(9)]
 
+'''
+button = Button(
+            game_window, 15, WINDOW_HEIGHT+8, 125, 35, text='Solve',
+            fontSize=50, margin=20,
+            inactiveColour=(255, 0, 0),
+            pressedColour=(0, 255, 0), radius=20,
+            onClick=lambda: print('Click')
+         )
+'''
+
 #main game loop
 while game_running:
     is_full = 0
@@ -48,11 +58,12 @@ while game_running:
             clicked_row = int(event.pos[1] // sm_rect_height)
             clicked_col = int(event.pos[0] // sm_rect_height)
 
-            if board[clicked_row][clicked_col].modifiable == 0:
+            if clicked_col <9 and clicked_row < 9 and board[clicked_row][clicked_col].modifiable == 0:
                 clicked_row = -1 
                 clicked_col = -1
-
-            print("(%d,%d) value: %d"% (clicked_col, clicked_row, board[clicked_row][clicked_col].val))
+                
+            if clicked_col <9 and clicked_row < 9:
+                print("(%d,%d) value: %d"% (clicked_col, clicked_row, board[clicked_row][clicked_col].val))
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
@@ -68,6 +79,9 @@ while game_running:
                 elif event.key >= pygame.K_0 and event.key <= pygame.K_9:
                     board[clicked_row][clicked_col].val = 0
                     board[clicked_row][clicked_col].val += int(event.unicode)
+
+    #button.listen(event)
+    #button.draw()
 
     
     for r in range(9):
@@ -102,7 +116,7 @@ while game_running:
     hour = min // 60
 
     timer = "%02d:%02d:%02d" % (hour%24, min%60, sec%60)
-    txt_surface = font.render(str(timer), True, pygame.Color('grey'))
+    txt_surface = font.render(timer, True, pygame.Color('grey'))
     game_window.blit(txt_surface, (WINDOW_WIDTH-105, WINDOW_HEIGHT+15))            
 
 

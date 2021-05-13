@@ -1,6 +1,8 @@
 '''
 This file contains backend of my Sudoky game
 '''
+import pdb
+
 
 class Square:
     def __init__(self, val):
@@ -11,17 +13,25 @@ class Square:
         #self.modifiable = modifiable
 
 
-def print_board():
-    print()
+def print_board(board):
     for r in range(9):
+        if r%3 ==0 :
+            print("\n------------------")
         print(end="|")
         for c in range(9):
-            print(board[r][c].get_val(), end="|")
+            print(board[r][c].val, end="|")
         print("\n------------------")
+
     print()
 
 
 def is_valid(board, ans, row, col):
+    """
+    This function checks if digit in certain square is valid
+    
+    param:      
+    return: 1 for valid and 0 for not valid
+    """
     for x in range(9):
         if board[row][x].val == ans and col != x:
             return 0
@@ -43,6 +53,54 @@ def is_solved(board):
                 return 0
     else: return 1
 
+
+def solve(board,row,col):
+    if row >= 9:
+        return True
+    else:
+        #calculate next indecies for the next square
+        next_col = (col+1)%9
+        next_row = row
+        if next_col == 0:
+            next_row += 1
+
+
+        if board[row][col].modifiable == 0:
+            return solve(board,next_row,next_col)
+        else:
+            for val in range(1,10):
+
+                if is_valid(board,val,row,col):
+                    board[row][col].val = val
+                    if solve(board,next_row,next_col):
+                        return True
+        board[row][col].val = 0
+        return False
+
+
+"""
+Initial board
+"""
+board_int = [[6,0,5,0,0,0,1,0,0],
+            [2,0,0,5,3,8,7,6,0],
+            [0,3,0,0,6,2,0,0,0],
+                
+            [0,0,0,0,0,0,2,0,6],
+            [0,5,0,0,0,6,3,0,9],
+            [9,0,6,3,0,0,0,7,1],
+                
+            [0,0,7,0,5,4,0,8,3],
+            [0,4,2,6,8,0,0,1,0],
+            [0,6,0,9,0,3,4,0,7]]
+
+
+board = [[Square(board_int[j][i]) for i in range(9)] for j in range(9)]
+
+solve(board,0,0)
+
+print_board(board)
+
+
 """
 Initial board
 """
@@ -63,7 +121,7 @@ board_int = [[6,0,5,0,0,0,1,0,0],
 solved board with 0 empty squares
 """
 board_0 = [
-        [1,8,5,4,7,9,1,3,2],
+        [6,8,5,4,7,9,1,3,2],
         [2,1,9,5,3,8,7,6,4],
         [7,3,4,1,6,2,5,9,8],
 
