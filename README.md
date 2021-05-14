@@ -2,10 +2,10 @@
 Sudoku game with. The goal of this game is to visualize the
 backtracking algorithm.
 
-# Concepts that were used
+# Concepts
 * Backtracking algorithm
 * Classes
-* Pygame: GUI, drawing and listening
+* Pygame: GUI, drawing and listening to events
 
 # Dependencies
 * pygame
