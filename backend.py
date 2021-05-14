@@ -1,9 +1,12 @@
 '''
-This file contains backend of my Sudoky game
+This file contains support functions that process the information that was collected
+from a user by the sudoku.py and display it on the window.
+
+@author Sergey Kostenko
+@version 05/14/21
 '''
 
 import pygame
-from pygame.constants import GL_FRAMEBUFFER_SRGB_CAPABLE
 
 WINDOW_WIDTH = 440
 WINDOW_HEIGHT = 450
@@ -13,7 +16,6 @@ sm_rect_width = WINDOW_WIDTH/9
 sm_rect_height = WINDOW_HEIGHT/9
 
 class Square:
-    #Styling of the board
     #thickness of the square frame
     clicked_thickness = 3
     unclicked_thickness = 1
@@ -25,10 +27,14 @@ class Square:
         self.text_color = 'dodgerblue2' if val ==0 else 'black'
         self.frame_color = (0,0,0)
         self.frame_thickness = Square.unclicked_thickness
-        #self.modifiable = modifiable
 
 
 def print_board(board):
+    """
+    This function prints board in terminal
+    :param      board: 2D array of objects Square
+    :return:    none
+    """
     for r in range(9):
         if r%3 ==0 :
             print("\n------------------")
@@ -41,10 +47,14 @@ def print_board(board):
 
 def is_valid(board, ans, row, col):
     """
-    This function checks if a digit in certain square is valid
+    This function checks the validity of a digit in certain square according to
+    rules of Sudoku
     
-    param:      
-    return: 1 for valid and 0 for not valid
+    :param:     board: 2D array of objects Square
+                ans: digit that is being places in that position
+                row: row where the digit is located
+                col: column where the digit is located
+    :return:    1 for valid and 0 for not valid
     """
     for x in range(9):
         if board[row][x].val == ans and col != x:
@@ -60,6 +70,12 @@ def is_valid(board, ans, row, col):
 
 
 def is_solved(board):
+    """
+    This function checks if the board is solved
+    
+    :param:     board: 2D array of objects Square
+    :return:    1 if board is solved and 0 if board was not solved
+    """
     for r in range(9):
         for c in range(9):
             if not is_valid(board, board[r][c].val,r,c):
@@ -68,7 +84,14 @@ def is_solved(board):
 
 
 def update_screen(board, game_window):
+    """
+    This function refreshes and draws the board, timer and a message in
+    the bottom left corner on the game window
     
+    :param:     board: 2D array of objects Square
+                game_window: game window the board is drawn
+    :return:    none
+    """
     is_full = 0
     font = pygame.font.Font(None, 32)
     game_window.fill((210,255,255)) 
@@ -79,10 +102,9 @@ def update_screen(board, game_window):
             if r%3 == 0 and c%3 == 0:
                 lrg_rect = pygame.Rect(c/3*lrg_rect_width, r/3*lrg_rect_height, lrg_rect_width, lrg_rect_height)
                 pygame.draw.rect(game_window, (0,0,0), lrg_rect, 4)
-            
 
             #draw small rectangle   
-            # (from left, from top, width, height)
+                # (from left, from top, width, height)
             sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width+1, sm_rect_height)
                 #(where, color, what to draw)
             pygame.draw.rect(game_window, board[r][c].frame_color, sm_rect, board[r][c].frame_thickness)
@@ -120,7 +142,18 @@ def update_screen(board, game_window):
 
 
 def solve(board,row,col, game_window):    
+    """
+    This recursive function tries to fit digits 1 to 9 into the square
+    and see if it is valid or not. This functions helps implement 
+    backtracking algorithm that allows computer to solve the board for 
+    the user
     
+    :param:     board: 2D array of objects Square
+                row: row where to try fit digits
+                col: column where to try fit digits
+    :return:    True: if the board is solved
+                False: if no digits between 1 and 9 are valid for this square
+    """
     if row >= 9:
         return True
     else:
@@ -132,6 +165,8 @@ def solve(board,row,col, game_window):
 
 
         if board[row][col].modifiable == 0:
+            if not is_valid(board,board[row][col].val,row,col):
+                return False
             return solve(board,next_row,next_col, game_window)
         else:
             for val in range(1,10):
@@ -155,7 +190,16 @@ def solve(board,row,col, game_window):
 
 
 def solve_board(board, game_window):
-    
+    """
+    This function prepares the board for the use of backtracking algorithm
+    by resetting all squares that were ment to be filled by the user to 0.
+    After backtracking algorithm is done this function unsellects all the
+    squares.
+    :param:     board: 2D array of objects Square
+                game window: game window where the board is drawn
+    :return:    none
+    """
+    #reset all squares that were ment to be filled up by the user to 0
     for r in range(9):
         for c in range(9):
             if board[r][c].modifiable == 1:
@@ -163,30 +207,17 @@ def solve_board(board, game_window):
                 board[r][c].frame_color = (0,0,0)
                 board[r][c].frame_thickness = Square.unclicked_thickness
 
-    solve(board,0,0,game_window)
+    if solve(board,0,0,game_window) == False:
+        print("This board has no solution")
 
+    #unselects all squares
     for r in range(9):
         for c in range(9):
             board[r][c].frame_color = (0,0,0)
             board[r][c].frame_thickness = Square.unclicked_thickness
 
 
-"""
-Initial board
-"""
-board_int = [[6,0,5,0,0,0,1,0,0],
-            [2,0,0,5,3,8,7,6,0],
-            [0,3,0,0,6,2,0,0,0],
-                
-            [0,0,0,0,0,0,2,0,6],
-            [0,5,0,0,0,6,3,0,9],
-            [9,0,6,3,0,0,0,7,1],
-                
-            [0,0,7,0,5,4,0,8,3],
-            [0,4,2,6,8,0,0,1,0],
-            [0,6,0,9,0,3,4,0,7]]
-
-
+#Below are examples of different boards.
 """
 Initial board
 """
