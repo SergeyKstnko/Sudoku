@@ -5,8 +5,18 @@ This file contains backend of my Sudoky game
 import pygame
 from pygame.constants import GL_FRAMEBUFFER_SRGB_CAPABLE
 
+WINDOW_WIDTH = 440
+WINDOW_HEIGHT = 450
+lrg_rect_width = WINDOW_WIDTH/3
+lrg_rect_height = WINDOW_HEIGHT/3
+sm_rect_width = WINDOW_WIDTH/9
+sm_rect_height = WINDOW_HEIGHT/9
 
 class Square:
+    #Styling of the board
+    #thickness of the square frame
+    clicked_thickness = 3
+    unclicked_thickness = 1
 
     def __init__(self, val):
         self.val = val
@@ -14,7 +24,7 @@ class Square:
         self.modifiable = 1 if val == 0 else 0
         self.text_color = 'dodgerblue2' if val ==0 else 'black'
         self.frame_color = (0,0,0)
-        self.frame_thickness = 2
+        self.frame_thickness = Square.unclicked_thickness
         #self.modifiable = modifiable
 
 
@@ -53,7 +63,6 @@ def is_solved(board):
     for r in range(9):
         for c in range(9):
             if not is_valid(board, board[r][c].val,r,c):
-                #print("%d %d %d"% (board[r][c],r,c))
                 return 0
     else: return 1
 
@@ -71,11 +80,11 @@ def update_screen(board, game_window):
                 lrg_rect = pygame.Rect(c/3*lrg_rect_width, r/3*lrg_rect_height, lrg_rect_width, lrg_rect_height)
                 pygame.draw.rect(game_window, (0,0,0), lrg_rect, 4)
             
+
             #draw small rectangle   
             # (from left, from top, width, height)
-            sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width, sm_rect_height)
+            sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width+1, sm_rect_height)
                 #(where, color, what to draw)
-
             pygame.draw.rect(game_window, board[r][c].frame_color, sm_rect, board[r][c].frame_thickness)
             
             #draw number
@@ -103,20 +112,11 @@ def update_screen(board, game_window):
         text = "Press SPACE to solve"
         color = 'grey'
 
-    font = pygame.font.Font(None, 32)
     txt_surface = font.render(text, True, pygame.Color(color))
     game_window.blit(txt_surface, (10, WINDOW_HEIGHT+15))
 
     pygame.display.flip()
 
-
-
-WINDOW_WIDTH = 440
-WINDOW_HEIGHT = 450
-lrg_rect_width = WINDOW_WIDTH/3
-lrg_rect_height = WINDOW_HEIGHT/3
-sm_rect_width = WINDOW_WIDTH/9
-sm_rect_height = WINDOW_HEIGHT/9
 
 
 def solve(board,row,col, game_window):    
@@ -140,7 +140,7 @@ def solve(board,row,col, game_window):
                     
                     board[row][col].val = val
                     board[row][col].frame_color = (0,255,0)
-                    board[row][col].frame_thickness = 4
+                    board[row][col].frame_thickness = Square.clicked_thickness
 
                     pygame.time.wait(100)
                     update_screen(board, game_window)
@@ -161,14 +161,14 @@ def solve_board(board, game_window):
             if board[r][c].modifiable == 1:
                 board[r][c].val = 0
                 board[r][c].frame_color = (0,0,0)
-                board[r][c].frame_thickness = 2
+                board[r][c].frame_thickness = Square.unclicked_thickness
 
     solve(board,0,0,game_window)
 
     for r in range(9):
         for c in range(9):
             board[r][c].frame_color = (0,0,0)
-            board[r][c].frame_thickness = 2
+            board[r][c].frame_thickness = Square.unclicked_thickness
 
 
 """

@@ -31,15 +31,6 @@ pygame.display.set_caption("Weeeelcome the one and only Sudoky game.")
 
 board = [[be.Square(be.board_int[j][i]) for i in range(9)] for j in range(9)]
 
-'''
-button = Button(
-            game_window, 15, WINDOW_HEIGHT+8, 125, 35, text='Solve',
-            fontSize=50, margin=20,
-            inactiveColour=(255, 0, 0),
-            pressedColour=(0, 255, 0), radius=20,
-            onClick=lambda: print('Click')
-         )
-'''
 
 #main game loop
 while game_running:
@@ -53,10 +44,11 @@ while game_running:
             game_running = False
         
         if event.type == pygame.MOUSEBUTTONDOWN:
+            
 
             if clicked_col in range(9) and clicked_row in range(9):
                 board[clicked_row][clicked_col].frame_color = (0,0,0)
-                board[clicked_row][clicked_col].frame_thickness = 2
+                board[clicked_row][clicked_col].frame_thickness = be.Square.unclicked_thickness
 
             clicked_row = int(event.pos[1] // sm_rect_height)
             clicked_col = int(event.pos[0] // sm_rect_height)
@@ -65,7 +57,7 @@ while game_running:
 
                 if board[clicked_row][clicked_col].modifiable == 1:
                     board[clicked_row][clicked_col].frame_color = (255,0,0)
-                    board[clicked_row][clicked_col].frame_thickness = 4
+                    board[clicked_row][clicked_col].frame_thickness = be.Square.clicked_thickness
 
                 elif board[clicked_row][clicked_col].modifiable == 0:
                     clicked_row = -1 
@@ -82,7 +74,7 @@ while game_running:
             if clicked_col >= 0 and clicked_row >=0:
                 if event.key == pygame.K_RETURN:
                     board[clicked_row][clicked_col].frame_color = (0,0,0)
-                    board[clicked_row][clicked_col].frame_thickness = 2
+                    board[clicked_row][clicked_col].frame_thickness = be.Square.unclicked_thickness
                     clicked_row = -1
                     clicked_col = -1
                     print("Zeroed out (%d,%d)"% (clicked_col, clicked_row))
