@@ -43,7 +43,7 @@ button = Button(
 
 #main game loop
 while game_running:
-    is_full = 0
+    #is_full = 0
     #color of the background
     game_window.fill((210,255,255))    
     font = pygame.font.Font(None, 32)
@@ -67,7 +67,9 @@ while game_running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
-                be.print_board()
+                be.print_board(board)
+            elif event.key == pygame.K_SPACE:
+                be.solve_board(board, game_window)
             if clicked_col >= 0 and clicked_row >=0:
                 if event.key == pygame.K_RETURN:
                     clicked_row = -1
@@ -79,51 +81,14 @@ while game_running:
                 elif event.key >= pygame.K_0 and event.key <= pygame.K_9:
                     board[clicked_row][clicked_col].val = 0
                     board[clicked_row][clicked_col].val += int(event.unicode)
+            
 
     #button.listen(event)
     #button.draw()
 
     
-    for r in range(9):
-        for c in range(9):
-            #draw large rectangle if it is time
-            if r%3 == 0 and c%3 == 0:
-                lrg_rect = pygame.Rect(c/3*lrg_rect_width, r/3*lrg_rect_height, lrg_rect_width, lrg_rect_height)
-                pygame.draw.rect(game_window, (0,0,0), lrg_rect, 4)
-            
-            #draw small rectangle   
-            # (from left, from top, width, height)
-            sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width, sm_rect_height)
-                #(where, color, what to draw)
-            if r == clicked_row and c == clicked_col:
-                color = (255,0,0)
-                border = 4
-            else:
-                color = (0,0,0)
-                border = 2
-            pygame.draw.rect(game_window, color, sm_rect, border)
+    be.update_screen(board, game_window)       
 
-            #draw number
-                #Render text
-            if board[r][c].val > 0:
-                txt_surface = font.render(str(board[r][c].val), True, pygame.Color(board[r][c].text_color)) 
-                game_window.blit(txt_surface, (c*sm_rect_width+17, r*sm_rect_height+15))
-            if board[r][c].val == 0:
-                is_full += 1
-
-    sec =  pygame.time.get_ticks() / 1000
-    min = sec // 60
-    hour = min // 60
-
-    timer = "%02d:%02d:%02d" % (hour%24, min%60, sec%60)
-    txt_surface = font.render(timer, True, pygame.Color('grey'))
-    game_window.blit(txt_surface, (WINDOW_WIDTH-105, WINDOW_HEIGHT+15))            
-
-
-    if is_full == 0 and be.is_solved(board):
-
-        print("YOOOOOOUUU SOOOOOOOOOLVED ITTTTT")
-        game_running = False
     
     #pygame.display.update()
     #pygame.event.pump()

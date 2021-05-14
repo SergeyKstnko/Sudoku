@@ -1,15 +1,21 @@
 '''
 This file contains backend of my Sudoky game
 '''
-import pdb
+
+import pygame
+from pygame.constants import GL_FRAMEBUFFER_SRGB_CAPABLE
 
 
 class Square:
+
+
+
     def __init__(self, val):
         self.val = val
         #if user can modify this square: 0 for no, 1 for yes.
         self.modifiable = 1 if val == 0 else 0
         self.text_color = 'dodgerblue2' if val ==0 else 'black'
+        #self.frame_color = ()
         #self.modifiable = modifiable
 
 
@@ -21,7 +27,6 @@ def print_board(board):
         for c in range(9):
             print(board[r][c].val, end="|")
         print("\n------------------")
-
     print()
 
 
@@ -54,7 +59,62 @@ def is_solved(board):
     else: return 1
 
 
-def solve(board,row,col):
+def update_screen(board, game_window):
+    
+    is_full = 0
+    font = pygame.font.Font(None, 32)
+    game_window.fill((210,255,255)) 
+    for r in range(9):
+        for c in range(9):
+            
+            #draw large rectangle if it is time
+            if r%3 == 0 and c%3 == 0:
+                lrg_rect = pygame.Rect(c/3*lrg_rect_width, r/3*lrg_rect_height, lrg_rect_width, lrg_rect_height)
+                pygame.draw.rect(game_window, (0,0,0), lrg_rect, 4)
+            
+            #draw small rectangle   
+            # (from left, from top, width, height)
+            sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width, sm_rect_height)
+                #(where, color, what to draw)
+            color = (0,0,0)
+            border = 2
+            pygame.draw.rect(game_window, color, sm_rect, border)
+            
+            #draw number
+                #Render text
+            if board[r][c].val > 0:
+                txt_surface = font.render(str(board[r][c].val), True, pygame.Color(board[r][c].text_color)) 
+                game_window.blit(txt_surface, (c*sm_rect_width+17, r*sm_rect_height+15))
+                
+
+            if board[r][c].val == 0:
+                is_full += 1
+
+    sec =  pygame.time.get_ticks() / 1000
+    min = sec // 60
+    hour = min // 60
+
+    timer = "%02d:%02d:%02d" % (hour%24, min%60, sec%60)
+    txt_surface = font.render(timer, True, pygame.Color('grey'))
+    game_window.blit(txt_surface, (WINDOW_WIDTH-105, WINDOW_HEIGHT+15))  
+    
+    pygame.display.flip()
+
+    if is_full == 0 and is_solved(board):
+
+        print("YOOOOOOUUU SOOOOOOOOOLVED ITTTTT")
+
+
+WINDOW_WIDTH = 440
+WINDOW_HEIGHT = 450
+lrg_rect_width = WINDOW_WIDTH/3
+lrg_rect_height = WINDOW_HEIGHT/3
+sm_rect_width = WINDOW_WIDTH/9
+sm_rect_height = WINDOW_HEIGHT/9
+
+
+def solve(board,row,col, game_window):    
+    
     if row >= 9:
         return True
     else:
@@ -66,16 +126,32 @@ def solve(board,row,col):
 
 
         if board[row][col].modifiable == 0:
-            return solve(board,next_row,next_col)
+            return solve(board,next_row,next_col, game_window)
         else:
             for val in range(1,10):
 
                 if is_valid(board,val,row,col):
+                    
                     board[row][col].val = val
-                    if solve(board,next_row,next_col):
+                    
+                    pygame.time.wait(100)
+                    update_screen(board, game_window)
+                    
+
+                    if solve(board,next_row,next_col, game_window):
                         return True
         board[row][col].val = 0
+        
         return False
+
+
+def solve_board(board, game_window):
+    
+    for r in range(9):
+        for c in range(9):
+            if board[r][c].modifiable == 1:
+                board[r][c].val = 0
+    solve(board,0,0,game_window)
 
 
 """
@@ -92,13 +168,6 @@ board_int = [[6,0,5,0,0,0,1,0,0],
             [0,0,7,0,5,4,0,8,3],
             [0,4,2,6,8,0,0,1,0],
             [0,6,0,9,0,3,4,0,7]]
-
-
-board = [[Square(board_int[j][i]) for i in range(9)] for j in range(9)]
-
-solve(board,0,0)
-
-print_board(board)
 
 
 """
