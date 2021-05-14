@@ -2,9 +2,11 @@
 Just my take on Sudoku game
 
 
-Dependancies
-pygame
+# Dependancies
+* pygame
+* Python 3
 
+# Instructions
 
 
 
