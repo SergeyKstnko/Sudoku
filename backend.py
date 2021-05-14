@@ -8,14 +8,13 @@ from pygame.constants import GL_FRAMEBUFFER_SRGB_CAPABLE
 
 class Square:
 
-
-
     def __init__(self, val):
         self.val = val
         #if user can modify this square: 0 for no, 1 for yes.
         self.modifiable = 1 if val == 0 else 0
         self.text_color = 'dodgerblue2' if val ==0 else 'black'
-        #self.frame_color = ()
+        self.frame_color = (0,0,0)
+        self.frame_thickness = 2
         #self.modifiable = modifiable
 
 
@@ -32,7 +31,7 @@ def print_board(board):
 
 def is_valid(board, ans, row, col):
     """
-    This function checks if digit in certain square is valid
+    This function checks if a digit in certain square is valid
     
     param:      
     return: 1 for valid and 0 for not valid
@@ -76,19 +75,18 @@ def update_screen(board, game_window):
             # (from left, from top, width, height)
             sm_rect = pygame.Rect(c*sm_rect_width, r*sm_rect_height, sm_rect_width, sm_rect_height)
                 #(where, color, what to draw)
-            color = (0,0,0)
-            border = 2
-            pygame.draw.rect(game_window, color, sm_rect, border)
+
+            pygame.draw.rect(game_window, board[r][c].frame_color, sm_rect, board[r][c].frame_thickness)
             
             #draw number
                 #Render text
             if board[r][c].val > 0:
                 txt_surface = font.render(str(board[r][c].val), True, pygame.Color(board[r][c].text_color)) 
                 game_window.blit(txt_surface, (c*sm_rect_width+17, r*sm_rect_height+15))
-                
-
+            
             if board[r][c].val == 0:
                 is_full += 1
+
 
     sec =  pygame.time.get_ticks() / 1000
     min = sec // 60
@@ -98,11 +96,19 @@ def update_screen(board, game_window):
     txt_surface = font.render(timer, True, pygame.Color('grey'))
     game_window.blit(txt_surface, (WINDOW_WIDTH-105, WINDOW_HEIGHT+15))  
     
+    if is_full == 0 and is_solved(board):
+        text = "Congrats!! It is solved"
+        color = 'red'
+    else:
+        text = "Press SPACE to solve"
+        color = 'grey'
+
+    font = pygame.font.Font(None, 32)
+    txt_surface = font.render(text, True, pygame.Color(color))
+    game_window.blit(txt_surface, (10, WINDOW_HEIGHT+15))
+
     pygame.display.flip()
 
-    if is_full == 0 and is_solved(board):
-
-        print("YOOOOOOUUU SOOOOOOOOOLVED ITTTTT")
 
 
 WINDOW_WIDTH = 440
@@ -133,7 +139,9 @@ def solve(board,row,col, game_window):
                 if is_valid(board,val,row,col):
                     
                     board[row][col].val = val
-                    
+                    board[row][col].frame_color = (0,255,0)
+                    board[row][col].frame_thickness = 4
+
                     pygame.time.wait(100)
                     update_screen(board, game_window)
                     
@@ -141,7 +149,8 @@ def solve(board,row,col, game_window):
                     if solve(board,next_row,next_col, game_window):
                         return True
         board[row][col].val = 0
-        
+        board[row][col].frame_color = (255,0,0)
+
         return False
 
 
@@ -151,7 +160,15 @@ def solve_board(board, game_window):
         for c in range(9):
             if board[r][c].modifiable == 1:
                 board[r][c].val = 0
+                board[r][c].frame_color = (0,0,0)
+                board[r][c].frame_thickness = 2
+
     solve(board,0,0,game_window)
+
+    for r in range(9):
+        for c in range(9):
+            board[r][c].frame_color = (0,0,0)
+            board[r][c].frame_thickness = 2
 
 
 """

@@ -43,7 +43,6 @@ button = Button(
 
 #main game loop
 while game_running:
-    #is_full = 0
     #color of the background
     game_window.fill((210,255,255))    
     font = pygame.font.Font(None, 32)
@@ -55,12 +54,22 @@ while game_running:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
 
+            if clicked_col in range(9) and clicked_row in range(9):
+                board[clicked_row][clicked_col].frame_color = (0,0,0)
+                board[clicked_row][clicked_col].frame_thickness = 2
+
             clicked_row = int(event.pos[1] // sm_rect_height)
             clicked_col = int(event.pos[0] // sm_rect_height)
 
-            if clicked_col <9 and clicked_row < 9 and board[clicked_row][clicked_col].modifiable == 0:
-                clicked_row = -1 
-                clicked_col = -1
+            if clicked_col in range(9) and clicked_row in range(9):
+
+                if board[clicked_row][clicked_col].modifiable == 1:
+                    board[clicked_row][clicked_col].frame_color = (255,0,0)
+                    board[clicked_row][clicked_col].frame_thickness = 4
+
+                elif board[clicked_row][clicked_col].modifiable == 0:
+                    clicked_row = -1 
+                    clicked_col = -1
                 
             if clicked_col <9 and clicked_row < 9:
                 print("(%d,%d) value: %d"% (clicked_col, clicked_row, board[clicked_row][clicked_col].val))
@@ -72,6 +81,8 @@ while game_running:
                 be.solve_board(board, game_window)
             if clicked_col >= 0 and clicked_row >=0:
                 if event.key == pygame.K_RETURN:
+                    board[clicked_row][clicked_col].frame_color = (0,0,0)
+                    board[clicked_row][clicked_col].frame_thickness = 2
                     clicked_row = -1
                     clicked_col = -1
                     print("Zeroed out (%d,%d)"% (clicked_col, clicked_row))
@@ -81,27 +92,10 @@ while game_running:
                 elif event.key >= pygame.K_0 and event.key <= pygame.K_9:
                     board[clicked_row][clicked_col].val = 0
                     board[clicked_row][clicked_col].val += int(event.unicode)
-            
-
-    #button.listen(event)
-    #button.draw()
 
     
     be.update_screen(board, game_window)       
 
-    
-    #pygame.display.update()
-    #pygame.event.pump()
-    pygame.display.flip()
-
-
-    #pygame.draw.line(game_window, (255,0,0), (100, 100), (300, 200), 5)
-
-    #empty_rect = pygame.Rect(400, 200, 25, 25)
-    #pygame.draw.rect(game_window, (255,0,0), empty_rect, 0)
-
-    #points = [(150, 150), (200, 120), (210, 150), (260, 140), (210, 250)]
-    #pygame.draw.polygon(game_window, (0,0,0), points)
 
     
 pygame.quit()
