@@ -1,6 +1,5 @@
 # Sudoku
-Sudoku game with. The goal of this game is to visualize the
-backtracking algorithm.
+Sudoku game with an option for the backtracking algorithm to solve the board for you.
 
 # Concepts
 * Backtracking algorithm
