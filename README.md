@@ -27,8 +27,9 @@ display an appropriate message
 #TODO:
 * Update colors of the game to make it more appealing to the eye
 
-![Beggining of the game](https://user-images.githubusercontent.com/7826894/170151510-aa2ea65e-1ef3-4c06-a5c5-53cd72c3f7be.png) 
-![Algorithm is attemoting to solve the board](https://user-images.githubusercontent.com/7826894/170151516-6aa5d1fc-36d2-4e09-a8ec-f0030334df69.png)
-![Algorithm is backtracking](https://user-images.githubusercontent.com/7826894/170151525-4c3b67a4-d52c-4943-aad1-aed02b79f2df.png)
+![Beginning of the game](https://user-images.githubusercontent.com/7826894/174456739-d1547363-7975-4685-a95f-58d0bc26ee34.png)
+![Algorithm backtracking](https://user-images.githubusercontent.com/7826894/174456761-b8a88e3c-ecac-40bd-94f8-06f22830521c.png)
+![Algorithm trying numbers](https://user-images.githubusercontent.com/7826894/174456764-ca2f76ff-e47a-4e97-847d-7c2f810bf937.png)
+![Algorithm or user solved the board](https://user-images.githubusercontent.com/7826894/174456767-c9718505-9d8c-462b-b02b-fd9f67f4f989.png)
+![User inputs numbers](https://user-images.githubusercontent.com/7826894/174456771-108346f0-1a91-46e2-8760-f9e2bd6060a7.png)
 
-![Algorithm solved the board](https://user-images.githubusercontent.com/7826894/170151532-d37c1fe1-44e8-4e6d-8728-581a7efabc64.png)
