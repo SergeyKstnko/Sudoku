@@ -27,9 +27,10 @@ display an appropriate message
 #TODO:
 * Update colors of the game to make it more appealing to the eye
 
-![Beginning of the game](https://user-images.githubusercontent.com/7826894/174456739-d1547363-7975-4685-a95f-58d0bc26ee34.png)
-![Algorithm backtracking](https://user-images.githubusercontent.com/7826894/174456761-b8a88e3c-ecac-40bd-94f8-06f22830521c.png)
-![Algorithm trying numbers](https://user-images.githubusercontent.com/7826894/174456764-ca2f76ff-e47a-4e97-847d-7c2f810bf937.png)
-![Algorithm or user solved the board](https://user-images.githubusercontent.com/7826894/174456767-c9718505-9d8c-462b-b02b-fd9f67f4f989.png)
-![User inputs numbers](https://user-images.githubusercontent.com/7826894/174456771-108346f0-1a91-46e2-8760-f9e2bd6060a7.png)
+![Beginning of the game](https://user-images.githubusercontent.com/7826894/174456903-86f387af-d162-420f-a349-f03bf2cf9362.png)
+![User inputs numbers](https://user-images.githubusercontent.com/7826894/174456940-7970c0b1-b874-4904-91ba-3e7b35bc7dfa.png)
+![Algorithm backtracking](https://user-images.githubusercontent.com/7826894/174456882-1fe87aa8-2065-44b8-ba2c-b0ac592a09f2.png)
+![Algorithm trying numbers](https://user-images.githubusercontent.com/7826894/174456884-dd70779b-66a6-4d1b-8521-7a211a51134d.png)
+![Algorithm or user solved the board](https://user-images.githubusercontent.com/7826894/174456887-58763ca6-c07f-4fe0-a5c8-1be06a016aba.png)
+
 
