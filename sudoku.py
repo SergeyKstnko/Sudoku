@@ -31,16 +31,16 @@ pygame.init()
 game_window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT+50))
 
 #set title
-pygame.display.set_caption("Weeeelcome the one and only Sudoky game.")
+pygame.display.set_caption("Welcome to the one and only Sudoky game.")
 
-
+#j is column and i is a row
 board = [[be.Square(be.board_int[j][i]) for i in range(9)] for j in range(9)]
 
 
 #main game loop
 while game_running:
     #color of the background
-    game_window.fill((210,255,255))    
+    game_window.fill((255,255,255))    
     font = pygame.font.Font(None, 32)
 
     #game content

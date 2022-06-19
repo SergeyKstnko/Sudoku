@@ -94,7 +94,7 @@ def update_screen(board, game_window):
     """
     is_full = 0
     font = pygame.font.Font(None, 32)
-    game_window.fill((210,255,255)) 
+    game_window.fill((255,255,255)) 
     for r in range(9):
         for c in range(9):
             
