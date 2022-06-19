@@ -26,9 +26,6 @@ display an appropriate message
 * When user presses Space bar it solves the board for him
 * Timer that tracks time lapsed since user started the game
 
-#TODO:
-* Update colors of the game to make it more appealing to the eye
-
 ![Beginning of the game](https://user-images.githubusercontent.com/7826894/174456903-86f387af-d162-420f-a349-f03bf2cf9362.png)
 ![User inputs numbers](https://user-images.githubusercontent.com/7826894/174456940-7970c0b1-b874-4904-91ba-3e7b35bc7dfa.png)
 ![Algorithm backtracking](https://user-images.githubusercontent.com/7826894/174456882-1fe87aa8-2065-44b8-ba2c-b0ac592a09f2.png)
