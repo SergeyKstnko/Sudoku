@@ -1,5 +1,7 @@
 # Sudoku
-Sudoku game with an option for the backtracking algorithm to solve the board for you.
+Sudoku game with an option to solve the board for you using backtracking algorithm.
+
+![Beginning of the game](https://user-images.githubusercontent.com/7826894/174456903-86f387af-d162-420f-a349-f03bf2cf9362.png)
 
 # Concepts
 * Backtracking algorithm
