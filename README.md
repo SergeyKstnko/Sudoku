@@ -9,7 +9,7 @@ Sudoku game with an option to solve the board for you using backtracking algorit
 * Pygame: GUI, drawing and listening to events
 
 # Dependencies
-* pygame
+* Pygame
 * Python 3
 
 # Instructions
